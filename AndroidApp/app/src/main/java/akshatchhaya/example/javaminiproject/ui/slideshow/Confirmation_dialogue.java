@@ -28,7 +28,7 @@ import akshatchhaya.example.javaminiproject.api.OnResponseListener;
 public class Confirmation_dialogue extends AppCompatDialogFragment {
 
     final String TAG="Confirm Password";
-    private ExampleDialogListener listener;
+    public ExampleDialogListener listener;
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class Confirmation_dialogue extends AppCompatDialogFragment {
         }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final EditText password=view.findViewById(R.id.confirm_password_for_changing);
+                EditText password=view.findViewById(R.id.confirm_password_for_changing);
                 listener.applyTexts(password.getText().toString());
 
             }
@@ -56,10 +56,9 @@ public class Confirmation_dialogue extends AppCompatDialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            listener = (ExampleDialogListener) context;
+            listener = (ExampleDialogListener)getTargetFragment();
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() +
-                    "must implement ExampleDialogListener");
+            Log.e(TAG,"Dakho onAttach");
         }
     }
     public interface ExampleDialogListener {

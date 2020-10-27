@@ -45,14 +45,14 @@ public class SlideshowFragment extends Fragment implements Confirmation_dialogue
                 LoginAPI api = new LoginAPI(getActivity(), new OnResponseListener() {
                     @Override
                     public void onSuccess() {
-                        button.setVisibility(View.INVISIBLE);
-                        button1.setVisibility(View.VISIBLE);
-                        new_Password1.setVisibility(View.VISIBLE);
-                        new_Password1.setVisibility(View.VISIBLE);
+
                     }
                     @Override
                     public void onFailure(int statusCode) {
-                        openDialog();
+                        button.setVisibility(View.INVISIBLE);
+                        button1.setVisibility(View.VISIBLE);
+                        new_Password1.setVisibility(View.VISIBLE);
+                        new_Password2.setVisibility(View.VISIBLE);
                     }
                 });
                 api.confirmPassword(password_from_dialogue);
@@ -63,17 +63,17 @@ public class SlideshowFragment extends Fragment implements Confirmation_dialogue
             public void onClick(final View root){
                 final String s1=new_Password1.getText().toString();
                 final String s2=new_Password2.getText().toString();
+
                 if(s1==s2) {
                     LoginAPI api = new LoginAPI(getActivity(), new OnResponseListener() {
                         @Override
                         public void onSuccess() {
-
+                            TextView t3=root.findViewById(R.id.textView3);
+                            t3.setVisibility(View.VISIBLE);
+                            t3.setText(s1);
                         }
-
-
                         @Override
                         public void onFailure(int statusCode) {
-                            Snackbar.make(root, "Looks like login failed please retry or re check your credentials and try again!", Snackbar.LENGTH_INDEFINITE).show();
                             Log.e(TAG, "onFailure: error" + statusCode);
                         }
                     });
@@ -86,8 +86,11 @@ public class SlideshowFragment extends Fragment implements Confirmation_dialogue
 
     public void  openDialog(){
         Confirmation_dialogue d1=new Confirmation_dialogue();
-        d1.show(getChildFragmentManager(),"Password Confirmation");
+        d1.setTargetFragment(SlideshowFragment.this,1);
+        d1.show(getParentFragmentManager(),"Password Confirmation");
     }
+
+    @Override
     public void applyTexts(String password) {
         password_from_dialogue=password;
     }
